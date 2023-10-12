@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<script src="/js/socios.js"></script>
+
+<body>
+
+    <div class=" row m-5 p-3" id="table-striped">
+  <div class="col-12">
+    <div class="card shadow-lg mb-5 bg-body rounded">
+      <div class="card-header">
+        <h1 class="card-title">Listado de socios</h1>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <p class="card-text">Selecciona los socios que quieres invitar al evento</p>
+        </div>
+        <!-- table striped -->
+        <div class="table-responsive p-5">
+        <div id="container">
+            <a href="{{path('invitacionEventos')}}" type="button" class="btn-primary mb-4" id="boton">
+            Guardar evento
+            </a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+{% endblock %}

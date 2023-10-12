@@ -1,0 +1,42 @@
+
+/* Clase que tendra el tooltip */
+
+.cssToolTip {
+    position: relative; /* Esta clase tiene que tener posicion relativa */
+}
+
+/* El tooltip */
+
+.cssToolTip span {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    margin-left:10px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+}
+
+.cssToolTip span::after{
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+/* El tooltip cuando se muestra */
+
+.cssToolTip:hover span {
+    visibility: visible;
+
+}

@@ -1,0 +1,51 @@
+.a--fontSize--aumenta:hover {
+        background-color: #6aa6ff ;
+        transition-property: background-color;
+        transition-duration: 3s ;
+        transition-timing-function:ease-in ;
+        border-radius: 20px;
+        transition-property: border-radius;
+        transition-duration: 2s ;
+        transition-timing-function:ease-in ;
+
+        transform: scale(1.1);
+}
+
+button:hover {
+        border: 2px black solid;
+        transition-property: border;
+        //transition-duration: 1s ;
+        transition-timing-function:ease-in ;
+}
+
+.header--border:hover
+{
+        border-radius: 20px;
+        transition-property: border-radius;
+        transition-duration: 2s ;
+        transition-timing-function:ease-in ;
+        border: 3px black solid;
+        transition-property: border;
+        transition-duration: 3s ;
+        transition-timing-function:ease-in ;
+
+        transform: translateY(20px);
+}
+
+.card--aumenta:hover{
+        box-shadow: 0 15px 30px rgb(51, 51, 51);
+        transition-property: box-shadow;
+        transition-duration: 1s ;
+        transition-timing-function:ease-in ;
+
+        transform: scale(1.1);   
+}
+
+// .b--seleccionado:hover {
+//         border-radius: 10px;
+//         transition-property: border-radius;
+//         transition-duration: 3s ;
+//         transition-timing-function:ease-in ;
+      
+//         transform: skewY(30deg);
+// }

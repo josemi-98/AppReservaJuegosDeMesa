@@ -1,0 +1,36 @@
+
+{% extends 'base.html.twig' %}
+  
+{% block title %}juego{% endblock %}
+  
+{% block body %}
+    <div class="container">
+        <h2 class="text-center mt-5 mb-3">Informacion del juego:</h2>
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-outline-info float-right" href="{{ path('app_juego_index') }}"> 
+                    Mantenimiento juego
+                </a>
+            </div>
+            <div class="card-body">
+                <b class="text-muted">Nombre:</b>
+                <p>{{ juego.nombre }}</p>
+                <b class="text-muted">Ancho:</b>
+                <p>{{ juego.ancho }}</p>
+                <b class="text-muted">Alto:</b>
+                <p>{{ juego.alto }}</p>
+                <b class="text-muted">Minimo de personas:</b>
+                <p>{{ juego.minPerson }}</p>
+                <b class="text-muted">Maximo de personas:</b>
+                <p>{{ juego.maxPerson }}</p>
+                <b class="text-muted">Imagen:</b>
+                <p> <img src="{{ vich_uploader_asset(juego, 'imageFile') }}" alt="{{juego.nombre}}" height="150px" width="200"> </p>
+
+                {# <b class="text-muted">Date Created:</b>
+                <p>{{ juego.createdAt ? juego.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <b class="text-muted">Date Updated:</b>
+                <p>{{ juego.updatedAt ? juego.updatedAt|date('Y-m-d H:i:s') : '' }}</p> #}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,108 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>OnePage Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet"/>
+
+  <!-- =======================================================
+  * Template Name: OnePage - v4.10.0
+  * Template URL: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+
+  <style> 
+.div {
+  background-color: yellow;
+  animation-name: example;
+  animation-duration: 4s;
+}
+
+@keyframes example {
+  from {background-color: red;}
+  to {background-color: yellow;}
+}
+</style>
+</head>
+
+<body>
+
+<div>
+</div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top mb-5 ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h1 class="logo"><a href="#">Xocas CIA</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{{path('landingPage')}}">Inicio</a></li>
+          <li><a class="nav-link scrollto" href="{{ path('juegos') }}">Juegos</a></li>
+          <li><a class="getstarted scrollto" href="{{ path('app_login') }}">Iniciar Sesion</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+  
+{% block body %}
+
+{# Mensajes de informacion al usuario, en este caso el juego creado #}
+
+
+
+<div class="container mt-5 " style="margin-top:300px">
+  <div class="row row-cols-2 ">
+
+{% for juego in juegos %}
+    <div class="card m-5 card--aumenta div" style="width: 18rem; ">
+  <img class="mt-2" src="{{ vich_uploader_asset(juego, 'imageFile') }}" alt="{{juego.nombre}}" height="100%" width="100%">
+  <div class="card-body">
+    <h2 class="card-title">{{ juego.nombre }}</h2>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div> Minimo de jugadores: {{ juego.minPerson }}</div>
+                        <div> Maximo de jugadores: {{ juego.maxPerson }}</div>
+    <a href="{{ path('app_login') }}" class="btn btn-primary">Jugar</a>
+  </div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+
+
+
+
+    
+  
+{% endblock %}

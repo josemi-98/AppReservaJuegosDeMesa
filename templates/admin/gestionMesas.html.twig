@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<head>
+
+
+        <script src="/js/Mesa.js"></script>
+        <script src="/js/formMesa.js"></script>
+        <script src="/js/calendario.js"></script>
+        
+    
+
+
+<style>
+        #droppable { width: 800px; height: 500px; padding: 0.5em; float: left; margin: 10px; }
+        #draggable, #draggable-nonvalid { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+        
+        .sala{
+    /* position: absolute; */
+    left: 0;
+    top: 0;
+    width: 800px;
+    height: 600px;
+    /* overflow: scroll; */
+    /* overflow-y: auto; */
+}
+
+.mesa{
+    /* position: absolute; */
+    background-image: url( '{{ asset('mesaaa.png', 'imagenlogo') }}');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: 5px;
+}
+
+.contenedor{
+    position: relative;
+    width: 100%;
+    /* min-width: 1300px; */
+}
+
+.almacen{
+    /*//con flex*/
+    /* position: flex; */
+    /*left: 1000px;*/ 
+    top: 0;
+  /* border: 1px solid;*/
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+        </style>
+
+</head>
+
+<body >
+
+
+{# Modal dialog con jquery  #}
+<div id="dialog-form" title="Crear nueva mesa">
+  <p class="validateTips">Todos los campos son requeridos</p>
+ 
+  <form>
+    <fieldset>
+      <label for="nombre">nombre</label>
+      <input type="text" nombre="nombre" id="nombre" value="mesa1" class="text ui-widget-content ui-corner-all">
+      <label for="ancho">ancho</label>
+      <input type="text" nombre="ancho" id="ancho" value="150" class="text ui-widget-content ui-corner-all">
+      <label for="alto">alto</label>
+      <input type="text" nombre="alto" id="alto" value="150" class="text ui-widget-content ui-corner-all">
+ 
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </fieldset>
+  </form>
+
+  <div id="respuesta">
+  </div>
+</div>
+
+  
+{# <button id="create-mesa">Crear nueva mesa</button> #}
+
+
+
+<div class=" row m-5 p-3" >
+
+<div class="col-12">
+    <div class="card shadow-lg mb-5 bg-body rounded">
+      <div class="card-header mb-5">
+        <h1 class="card-title text-center">GESTION DE RESERVAS</h1>
+      </div>
+
+      
+      <section id="basic-horizontal-layouts" >
+    <div class="row match-height p-3">
+        <div class="col-md-4 col-12">
+        <div class="card">
+        
+            <div class="card-header ">
+            
+            <h4 class="card-title">ALMACEN   
+
+              <button id="create-mesa" class="mt-4 d-flex align-item-center border-0"> <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg> Nueva mesa</button>
+
+
+              {# <button type="button" id="crear"> crear </button> #}
+            </h4>
+
+            
+            </div>
+            <div class="card-content ">
+            <div class="card-body" style="height:600px;">
+
+            {# <div class="almacen" id="almacen1">
+                                <div class="mesa" id="ancho"></div>
+       
+                            </div> #}
+               
+                 <div class="almacen" id="almacen" name="almacen">                               
+                            </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-8 col-12">
+
+        
+        <div class="card">
+            <div class="card-header">
+            <h4 class="card-title">SALA</h4>
+
+            <div class="col-md-4">
+                           
+
+                        
+
+            </div>
+            <div class="card-content">
+            
+            <div class="card-body" style="height:600px" id="contenedor">
+
+                            <div id="sala" class="sala "></div>
+
+                        </div>
+                  {# <div id="droppable" class="ui-widget-header">
+                  <div class="element"></div> #}
+                  <!-- <p>accept: &apos;#draggable&apos;</p> -->
+                </div>
+            </div>
+            </div>
+                      <!-- guardamos la informacion de la sala -->
+                      <div class="mt-4">
+                        <label for="desde">Guardar para el dia:</label>
+                        </div>
+                        <div class="col-md-8 form-group mb-3">
+                            <input type="text" id="desde" class="form-control" name="horaInicio" placeholder="Guarda tu sala">
+                        </div>
+                        
+                        <div class="col-sm-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="guardar">Guardar</button>
+                        </div>
+                      </div>
+        </div>
+        </div>
+    </div>
+    </section>
+    </div>
+     
+</div>
+
+</div>
+</body>
+
+{% endblock %}

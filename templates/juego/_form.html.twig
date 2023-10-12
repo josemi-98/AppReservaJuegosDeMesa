@@ -1,0 +1,50 @@
+<style>
+
+img{
+    width: 150px;
+}
+
+label.juego_imageFile_delete{
+    display:none;
+}
+
+</style>
+
+<div class="row">
+    <div class="col-md-6 col-12">
+        {{ form_start(form) }}
+            <div class="form-group mb-3">
+                    {{ form_row(form.nombre, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.ancho, {'attr': {'class': 'form-control'}}) }}               
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.alto, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.min_person, {'label': 'Minimo de personas','attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.max_person, {'label': 'Maximo de personas','attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.imageFile, {'label': 'Imagen del juego','attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3" >{{ button_label|default('Guardar Juego') }}</button>
+            </div>
+    {{ form_end(form) }}
+    </div>
+</div>

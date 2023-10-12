@@ -1,0 +1,383 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+<body class="bg-dark">
+<script src="/js/socios.js"></script>
+
+<script>
+
+$ ( document ).ready(function() {
+$.ajax({
+    type: 'GET',
+    url: 'http://127.0.0.1:8000/api/evento',
+    dataType: 'json',
+    success: function(data) {
+
+        $.each(data, function(i, dato) {
+          let cadenaInicio=""
+          let fechaInicio ;
+          if( dato.fechaInicio != null ){
+
+             fechaInicio=new Date (dato.fechaInicio.date);
+          
+          cadenaInicio="Dia "+(fechaInicio.getDate())+"/"+(fechaInicio.getMonth()+1)+"/"+(fechaInicio.getFullYear())+ ", \n Hora: " +
+          (fechaInicio.getHours())+":" +(fechaInicio.getMinutes())+ ":" + (fechaInicio.getSeconds());
+          console.log(fechaInicio);
+
+          }
+
+          let cadenaFin=""
+          let fechafin ;
+          if( dato.fechaFin != null ){
+
+             fechaFin=new Date (dato.fechaFin.date);
+          
+          cadenaFin="Dia "+(fechaFin.getDate())+"/"+(fechaFin.getMonth()+1)+"/"+(fechaFin.getFullYear())+ ", \n Hora: " +
+          (fechaFin.getHours())+":" +(fechaFin.getMinutes())+ ":" + (fechaFin.getSeconds());
+
+          }
+            var body = "<tr>";
+            body    += "<td>" + dato.id + "</td>";
+            body    += "<td>" + dato.nombre + "</td>";
+            body    += "<td>" + dato.descripcion + "</td>";
+            body    += "<td>" + cadenaInicio+ "</td>";
+            body    += "<td>" + cadenaFin+ "</td>";
+            
+            body    += "</tr>";
+            $( "#Table tbody" ).append(body);
+        });
+        /*DataTables instantiation.*/
+        $( "#Table" ).DataTable();
+    },
+    error: function() {
+        alert('Fail!');
+    }
+});
+});
+</script>
+
+ {# {% if form is defined %}
+     {{ form(form) }}
+{% endif %} #}
+
+{% if form.juego is defined   %}
+
+<div class="container">
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center mb-3">Elige el juego para el evento</h2>
+            </div>
+            <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    {{ form_start(form) }}
+                        <div class="form-group mb-3">
+                                {{ form_row(form.juego, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group mb-3">
+                                {{ form_row(form.eventos, {'attr': {'class': 'form-control'}}) }}               
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end">
+                            <button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3" >{{ button_label|default('Invitar usuarios') }}</button>
+                        </div>
+                {{ form_end(form) }}
+                </div>
+            </div>
+            </div>
+    </div>
+
+</div>
+
+
+{% else %}
+<div class="container">
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center mb-3">Crear un evento</h2>
+            </div>
+            <div class="card-body">
+<div class="row">
+    <div class="col-md-6 col-12">
+        {{ form_start(form) }}
+            <div class="form-group mb-3">
+                    {{ form_row(form.nombre, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.descripcion, {'attr': {'class': 'form-control'}}) }}               
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.fechaInicio, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.fechaFin, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            {# <div class="col-md-6 col-12 mb-3">
+                <div class="form-group">
+                    {{ form_row(form.invitacion, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div> #}
+            <div class="col-12 d-flex justify-content-end">
+                            <button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3" >{{ button_label|default('Elegir Juego') }}</button>
+                        </div>
+    {{ form_end(form) }}
+    </div>
+</div>
+</div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+   <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center mt-5 mb-3">Listado de Juegos y eventos</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre del Juego</th>
+                        <th>Nombre del Evento</th>
+                        
+                        <th width="240px">Acciones</th>
+                    </tr>
+                    {% for gamesEvent in juegos %}
+                    <tr>
+                        <td>{{ gamesEvent.id }}</td>
+                        <td>{{ gamesEvent.juego }}</td>
+                        <td>{{ gamesEvent.eventos }}</td>
+                        <td>
+                            <form method="post" action="{{ path('app_gamesEvent_delete', {'id': gamesEvent.id}) }}" onsubmit="return confirm('Seguro que desea eliminar este evento? ');">
+                                <a
+                                    class="btn btn-outline-success"
+                                    href="{{ path('app_gamesEvents_edit', {'id': gamesEvent.id}) }}">
+                                    Editar
+                                </a> 
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ gamesEvent.id) }}">
+                                <button class="btn btn-outline-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+
+<div class=" row m-5 p-3" id="table-striped">
+  <div class="col-12">
+    <div class="card shadow-lg mb-5 bg-body rounded">
+      <div class="card-header">
+        <h1 class="card-title">Listado de socios</h1>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <p class="card-text">Selecciona los socios que quieres invitar al evento</p>
+        </div>
+        <!-- table striped -->
+        <div class="table-responsive p-5">
+        <div id="container">
+            <button type="button" class="btn-primary mb-4" id="boton">
+            Guardar
+            </button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--form Modal -->
+                    <div class="modal fade text-left" id="inlineForm" tabindex="-1" aria-labelledby="myModalLabel33" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+
+
+
+                            <div class="modal-header bg-light">
+
+                            <h4 class="modal-title" id="myModalLabel33">Nuevo evento </h4>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+
+                            
+                            </div>
+
+                            
+                            <form action="#">
+                            <div class="modal-body">
+
+
+                         
+                            {# {{ form_start(form) }}
+                                <div class="form-outline col-md-12" required>
+                                    {{ form_row(form.nombre, {'attr': {'class': 'form-control', 'type':'textarea'}})  }}
+                                </div>
+                                <div class="form-outline col-md-12" required>
+                                    {{ form_row(form.descripcion, {'attr': {'class': 'form-control'}})  }}
+                                </div>
+                                <div class="form-outline col-md-12" required>
+                                    {{ form_row(form.fechaInicio, {'attr': {'class': 'form-control'}})  }}
+                                </div>
+                                <div class="form-outline col-md-12" required>
+                                    {{ form_row(form.fechaFin, {'attr': {'class': 'form-control'}})  }}
+                                </div>
+                                <div class="form-outline col-md-12" required>
+                                    {{ form_row(form.invitacion, {'attr': {'class': 'form-control'}})  }}
+                                </div>
+                                <div class="col-12 d-flex justify-content-end">
+                <button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3" >{{ button_label|default('Guardar invitacionEvento') }}</button>
+            </div>
+
+                                {{ form_end(form) }} #}
+
+
+
+
+                                {# {% if form is defined %}
+     {{ form(form) }}
+{% endif %} #}
+
+
+
+
+
+
+                                {# <div class="row">
+    <div class="col-md-6 col-12">
+        {{ form_start(form) }}
+            <div class="form-group mb-3">
+                    {{ form_row(form.nombre, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.descripcion, {'attr': {'class': 'form-control'}}) }}               
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group mb-3">
+                    {{ form_row(form.fechaInicio, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.fechaFin, {'label': 'Minimo de personas','attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    {{ form_row(form.invitacion, {'label': 'Maximo de personas','attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+           
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3" >{{ button_label|default('Guardar invitacionEvento') }}</button>
+            </div>
+    {{ form_end(form) }}
+    </div>
+</div> #}
+                                <label for="nombre">Nombre: </label>
+                                <div class="form-group">
+                                <input type="text" placeholder="Nombre para el evento" class="form-control" id="nombre" name="nombre">
+                                </div>
+                                <label for="ancho">Descripcion: </label>
+                                <div class="form-group">
+                                <input type="textarea" placeholder="Describe brevemente el evento" class="form-control" id="ancho" name="ancho">
+                                </div>
+                                <label for="alto">Fecha Inicio: </label>
+                                <div class="form-group">
+                                <input type="datetime-local" placeholder="hora y dia del inicio del evento" class="form-control" id="alto" name="alto">
+                                </div>
+                            </div>
+                                {# </div>
+                                    <div id="respuesta" class="alert alert-success">
+
+                                </div> #}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Cancelar</span>
+                                </button>
+                                <button type="button" id="crear" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                                <i class="bx bx-check d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Crear</span>
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+<!-- fin del form Modal eventos -->
+
+
+
+
+
+
+
+<h1 class="text-center mt-5 mb-3">INVITACION A EVENTOS</h1>
+<div class=" row m-5 p-3" id="table-striped">
+  <div class="col-12">
+    <div class="card shadow-lg mb-5 bg-body rounded">
+      <div class="card-header">
+        <h3 class="card-title text-align-center">LISTADO DE EVENTOS</h3>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <p class="card-text mb-4">Crea un evento e invita a los particiapntes.</p>
+          <a href="" class="d-flex justify-content-end mb-2" data-bs-toggle="modal" data-bs-target="#inlineForm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>Nuevo evento</a>
+        </div>
+        <!-- table striped -->
+        <div class="table-responsive p-5">
+          <table class="table table-striped  p-5" id="Table">
+            <thead>
+              <tr>
+                    <th width="5%">ID</th>
+                    <th width="5%">Nombre</th>
+                    <th width="20%">Descripcion</th>
+                    <th width="30%">Fecha Inicio</th>
+                    <th width="20%">Fecha Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+{% endblock %}
